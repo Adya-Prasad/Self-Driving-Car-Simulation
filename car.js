@@ -1,5 +1,5 @@
 class Car{
-    constructor(x,y,width,height,controlType, maxspeed=3){
+    constructor(x,y,width,height,controlType, maxspeed=4){
         this.x = x;
         this.y = y;
         this.width = width;
@@ -64,7 +64,7 @@ class Car{
 
     #createPolygon(){
         const points=[];
-        const rad=Math.hypot(this.width, this.height)/2;
+        const rad=Math.hypot(this.width, this.height)/1.5;
         const alpha=Math.atan2(this.width, this.height); // angle
         points.push({
             x:this.x-Math.sin(this.angle-alpha)*rad,
@@ -124,7 +124,7 @@ class Car{
 
     draw(ctx,color, drawSensor=false){
         if(this.damaged){
-            ctx.fillStyle="gray";
+            ctx.fillStyle="#b43b4fc9";
         }else{
             ctx.fillStyle=color;
         }

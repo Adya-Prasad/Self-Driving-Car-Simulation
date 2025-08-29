@@ -35,6 +35,7 @@ class Visualizer{
 
         const {inputs,outputs,weights,biases}=level;
 
+        // Draw connections with improved color and shadows
         for(let i=0;i<inputs.length;i++){
             for(let j=0;j<outputs.length;j++){
                 ctx.beginPath();
@@ -53,24 +54,47 @@ class Visualizer{
         }
 
         const nodeRadius=18;
+
+        // Draw input nodes
         for(let i=0;i<inputs.length;i++){
             const x=Visualizer.#getNodeX(inputs,i,left,right);
             ctx.beginPath();
             ctx.arc(x,bottom,nodeRadius,0,Math.PI*2);
-            ctx.fillStyle="black";
+            ctx.fillStyle="#A9A9A9"; // Dark grey
+            ctx.shadowColor = "rgba(0,0,0,0.5)";
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
             ctx.fill();
+
+            ctx.shadowColor = "transparent"; // Reset shadow
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
             ctx.beginPath();
             ctx.arc(x,bottom,nodeRadius*0.6,0,Math.PI*2);
             ctx.fillStyle=getRGBA(inputs[i]);
             ctx.fill();
         }
         
+        // Draw output nodes
         for(let i=0;i<outputs.length;i++){
             const x=Visualizer.#getNodeX(outputs,i,left,right);
             ctx.beginPath();
             ctx.arc(x,top,nodeRadius,0,Math.PI*2);
-            ctx.fillStyle="black";
+            ctx.fillStyle="#A9A9A9"; // Dark grey
+            ctx.shadowColor = "rgba(0,0,0,0.5)";
+            ctx.shadowBlur = 10;
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = 5;
             ctx.fill();
+
+            ctx.shadowColor = "transparent"; // Reset shadow
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            
             ctx.beginPath();
             ctx.arc(x,top,nodeRadius*0.6,0,Math.PI*2);
             ctx.fillStyle=getRGBA(outputs[i]);
@@ -88,8 +112,8 @@ class Visualizer{
                 ctx.beginPath();
                 ctx.textAlign="center";
                 ctx.textBaseline="middle";
-                ctx.fillStyle="black";
-                ctx.strokeStyle="white";
+                ctx.fillStyle="#ffffffff"; // Black
+                ctx.strokeStyle="#bebebeff"; // White
                 ctx.font=(nodeRadius*1.5)+"px Arial";
                 ctx.fillText(outputLabels[i],x,top+nodeRadius*0.1);
                 ctx.lineWidth=0.5;
