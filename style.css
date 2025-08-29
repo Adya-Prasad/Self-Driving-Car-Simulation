@@ -1,0 +1,30 @@
+body{
+    margin: 0;
+    background-color: green ;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+}
+
+#verticalButtons{
+    display: flex;
+    flex-direction: column;
+}
+
+button{
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    padding: 7px;
+    margin: 5px;
+
+}
+
+#carCanvas{
+    background: lightgray;
+}
+
+#neuralNetworksCanvas{
+    background: rgb(108, 108, 114);
+}
