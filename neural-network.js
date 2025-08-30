@@ -75,11 +75,8 @@ class Level{
                 sum += level.inputs[j]*level.weights[j][i];
             }
 
-            if(sum > level.biases[i]){
-                level.outputs[i]=1;
-            }else{
-                level.outputs[i] = 0
-            }
+            // Use tanh activation for smoother, continuous outputs (-1 to 1)
+            level.outputs[i] = Math.tanh(sum + level.biases[i]);
         }
         return level.outputs
     }

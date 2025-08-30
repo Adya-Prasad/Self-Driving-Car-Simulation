@@ -1,3 +1,14 @@
+// --- Utility Functions ---
+/**
+ * A utility function for Linear Interpolation (lerp).
+ * It finds a value that is a certain fraction (t) between two other values (A and B).
+ * For example, lerp(10, 20, 0.5) would return 15.
+ * We use this to calculate various components.
+ * @param {number} A - The starting value.
+ * @param {number} B - The ending value.
+ * @param {number} t - The fraction (between 0 and 1) to interpolate by.
+ * @returns {number} The interpolated value.
+ */
 function lerp(A, B, t){  // lerp: linear interpolation
     return A + (B-A)*t;
 }
@@ -40,8 +51,8 @@ function polysIntersect(poly1, poly2){
 
 function getRGBA(value){
     const alpha=Math.abs(value);
-    const R=value<0?0:255;
-    const G=R;
-    const B=value>0?0:255;
+    const R=value>0?0:255; // Red for negative values (inhibition)
+    const G=value>0?255:0; // Green for positive values (excitation)
+    const B=0;
     return "rgba("+R+","+G+","+B+","+alpha+")";
 }

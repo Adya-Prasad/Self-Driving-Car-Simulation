@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>Self-driving car simulation - No libraries</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<canvas id="carCanvas"></canvas>
-<div id="verticalButtons">
-    <button onclick="save()" ><svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4c-3.72 0-6.86 2.65-7.46 6.2C3.15 10.66 2 12.35 2 14.5c0 2.76 2.24 5 5 5h12c2.76 0 5-2.24 5-5 0-2.65-2.29-4.83-5.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"/></svg>Save</button>
-    <button onclick="discard()" >x Delete</button>
-</div>
-<canvas id="neuralNetworksCanvas"></canvas>
-<script src="neural-network.js"></script>
-<script src="road.js"></script>
-<script src="sensor.js"></script>
-<script src="utils.js"></script>
-<script src="car.js"></script>
-<script src="controls.js"></script>
-<script src="visualizer.js"></script>
-<script src="main.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <canvas id="carCanvas"></canvas>
+  <div class="info">
+    <canvas id="neuralNetworksCanvas"></canvas>
+    <div id="verticalButtons">
+      <h1>Self Learning, Self Driving Car Simulation</h1>
+      <button title="✔ Save the current AI car learnings, if you think it is doing great!" onclick="save()">
+        ✔ Save
+      </button>
+      <button title="✘ Delete the current AI car learnings" onclick="discard()">
+        ✘ Delete
+      </button>
+      <button title="working under devlopment">❚❚ Pause</button>
+      <p><span id="red">- - - </span>shows negative weight (inhibitory connection)</p>
+      <p><span id="green">- - - </span>shows positive weights (excitatory connection)</p>
+    </div>
+  </div>
+  <script src="neural-network.js"></script>
+  <script src="road.js"></script>
+  <script src="sensor.js"></script>
+  <script src="utils.js"></script>
+  <script src="car.js"></script>
+  <script src="controls.js"></script>
+  <script src="visualizer.js"></script>
+  <script src="main.js"></script>
 </html>
