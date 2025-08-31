@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Self-driving car simulation - No libraries</title>
+    <title>AI Self-driving car simulation - No libraries</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <canvas id="carCanvas"></canvas>
   <div class="info">
     <canvas id="neuralNetworksCanvas"></canvas>
     <div id="verticalButtons">
-      <h1>Self Learning, Self Driving Car Simulation</h1>
-      <button title="✔ Save the current AI car learnings, if you think it is doing great!" onclick="save()">
-        ✔ Save
-      </button>
-      <button title="✘ Delete the current AI car learnings" onclick="discard()">
-        ✘ Delete
-      </button>
+      <h1>AI Self Learning, Self Driving Car Simulation</h1>
+      <p>Run this simulation many times (refresh) and do save for better car learning</p>
+      <button title="✔ Save the current AI car learnings (in your local storage), if you think it is doing great!" onclick="save()">✔ Save</button>
+      <button title="✘ Delete the current AI car learnings" onclick="discard()">✘ Delete</button>
       <button title="working under devlopment">❚❚ Pause</button>
       <p><span id="red">- - - </span>shows negative weight (inhibitory connection)</p>
       <p><span id="green">- - - </span>shows positive weights (excitatory connection)</p>

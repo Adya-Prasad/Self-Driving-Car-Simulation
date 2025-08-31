@@ -1,8 +1,3 @@
-// Utility function for linear interpolation
-function lerp(A, B, t) {
-    return A + (B - A) * t;
-}
-
 class Road{
     constructor(x, width, laneCount=3, trackType="straight"){
         this.x = x;

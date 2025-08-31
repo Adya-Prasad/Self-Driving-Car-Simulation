@@ -1,17 +1,18 @@
 class Car {
-  constructor(x, y, width, height, controlType, maxspeed = 3.9) { // Reduced by 0.1 for slower speeds
+  constructor(x, y, width, height, controlType, maxspeed = 3.1) {
+    // Reduced by 0.1 for slower speeds
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
 
     this.speed = 0;
-    this.acceleration = 0.19; // Reduced by 0.01 for slower acceleration
+    this.acceleration = 0.17;
     this.maxspeed = maxspeed;
     this.friction = 0.05;
     this.angle = 0;
     this.damaged = false;
-    this.controlType = controlType; // Store control type
+    this.controlType = controlType;
 
     // Add fitness tracking for curved tracks
     this.fitness = 0;
@@ -21,7 +22,7 @@ class Car {
     this.useAiBrain = controlType == "AI";
 
     if (controlType === "DUMMY") {
-      this.t = 0; // track parameter (0 to 2PI) - will be set properly in main.js
+      this.t = 0;
       this.trackspeed = 0.01;
       this.invincible = true; // prevent damage
       this.laneIndex = 1; // default to middle lane, will be set in main.js
@@ -29,11 +30,11 @@ class Car {
 
     if (controlType != "DUMMY") {
       this.sensor = new Sensor(this);
-      // Enhanced 4-layer neural network for better decision making
-      // input layer: 7 sensors + 2 speed/angle inputs = 9 total inputs
-      // hidden layers: 12 and 8 neurons for complex pattern recognition
+      // OPTIMIZED 4-layer neural network for better collision avoidance
+      // input layer: 9 sensors + 2 speed/angle inputs = 11 total inputs
+      // hidden layers: 16 and 10 neurons for enhanced pattern recognition
       // output layer: 4 neurons (forward, left, right, reverse)
-      this.brain = new NeuralNetwork([this.sensor.rayCount + 2, 12, 8, 4]);
+      this.brain = new NeuralNetwork([this.sensor.rayCount + 2, 16, 10, 4]);
     }
     this.controls = new Controls(controlType);
   }
@@ -74,31 +75,55 @@ class Car {
             const progressReward =
               progressDelta > 0 ? progressDelta * 500 : progressDelta * 1000;
 
-            // Enhanced fitness calculation for better learning
-            const speedBonus = this.speed > 0 ? this.speed * 10 : this.speed * 50; // Strong penalty for reverse
-            
-            // Reward smooth driving (penalize excessive turning)
-            const turnPenalty = Math.abs(this.controls.left - this.controls.right) > 0.8 ? -5 : 0;
+            // OPTIMIZED fitness calculation for better learning and collision avoidance
+            const speedBonus =
+              this.speed > 0 ? this.speed * 8 : this.speed * 100; // Stronger reverse penalty
 
-            // Strong bonus for maintaining optimal speed (1.4-2.4) - reduced by 0.1
-            const optimalSpeedBonus = (this.speed > 1.4 && this.speed < 2.4) ? 20 : 0;
-            
-            // Bonus for continuous movement (penalize stopping)
-            const movementBonus = this.speed > 0.4 ? 15 : -10; // Reduced threshold by 0.1
-            
-            // Bonus for staying alive longer
-            const survivalBonus = this.timeAlive * 2;
-            
-            // Track progress is most important
-            const trackProgressBonus = progressReward * 2;
+            // Enhanced smooth driving rewards
+            const turnPenalty =
+              Math.abs(this.controls.left - this.controls.right) > 0.6
+                ? -10
+                : 0;
+            const smoothTurnBonus =
+              Math.abs(this.controls.left - this.controls.right) < 0.3 ? 5 : 0;
 
-            this.fitness = survivalBonus + 
-                          this.distanceTraveled * 15 + 
-                          trackProgressBonus + 
-                          speedBonus + 
-                          turnPenalty + 
-                          optimalSpeedBonus + 
-                          movementBonus;
+            // Optimal speed with wider range for better learning
+            const optimalSpeedBonus =
+              this.speed > 1.2 && this.speed < 2.6 ? 25 : 0;
+
+            // Movement consistency bonus
+            const movementBonus = this.speed > 0.5 ? 20 : -15;
+
+            // Collision avoidance bonus - reward cars that stay alive longer
+            const survivalBonus = this.timeAlive * 3;
+
+            // Distance from obstacles bonus (encourage safe driving)
+            let safetyBonus = 0;
+            if (this.sensor && this.sensor.readings) {
+              const avgDistance =
+                this.sensor.readings
+                  .filter((r) => r !== null)
+                  .reduce((sum, r) => sum + r.offset, 0) /
+                Math.max(
+                  1,
+                  this.sensor.readings.filter((r) => r !== null).length
+                );
+              safetyBonus = avgDistance > 0.3 ? 10 : 0; // Reward maintaining distance
+            }
+
+            // Track progress is most important - increased weight
+            const trackProgressBonus = progressReward * 3;
+
+            this.fitness =
+              survivalBonus +
+              this.distanceTraveled * 12 +
+              trackProgressBonus +
+              speedBonus +
+              turnPenalty +
+              smoothTurnBonus +
+              optimalSpeedBonus +
+              movementBonus +
+              safetyBonus;
           } else {
             this.fitness = this.timeAlive + this.distanceTraveled * 10; // Original fitness
           }
@@ -110,52 +135,77 @@ class Car {
       const offsets = this.sensor.readings.map((s) =>
         s == null ? 0 : 1 - s.offset
       );
-      
+
       // Enhanced inputs: sensor data + speed + angular velocity
       const normalizedSpeed = this.speed / this.maxspeed; // Normalize speed to 0-1
       const normalizedAngle = (this.angle % (2 * Math.PI)) / (2 * Math.PI); // Normalize angle to 0-1
-      
+
       const enhancedInputs = [...offsets, normalizedSpeed, normalizedAngle];
       const outputs = NeuralNetwork.feedforward(enhancedInputs, this.brain);
       // console.log("Enhanced Inputs:", enhancedInputs);
       // console.log("Network Outputs:", outputs);
 
       if (this.useAiBrain) {
-        // Process tanh outputs (-1 to 1) into control signals (0 to 1)
-        // Convert tanh outputs to positive values and add forward bias
-        this.controls.forward = Math.max(0.3, (outputs[0] + 1) / 2); // Always some forward bias (reduced by 0.1)
-        this.controls.left = Math.max(0, outputs[1]); // Only positive values for left
-        this.controls.right = Math.max(0, outputs[2]); // Only positive values for right
-        this.controls.reverse = Math.max(0, (outputs[3] + 1) / 2 - 0.7); // Strongly discourage reverse
+        // OPTIMIZED: Smoother control processing with temporal smoothing
+        const rawForward = Math.max(0.2, (outputs[0] + 1) / 2);
+        const rawLeft = Math.max(0, outputs[1]);
+        const rawRight = Math.max(0, outputs[2]);
+        const rawReverse = Math.max(0, (outputs[3] + 1) / 2 - 0.8);
 
-        // Smooth out conflicting controls to reduce shaking
-        if (this.controls.left > 0.3 && this.controls.right > 0.3) {
-          // If both left and right are strong, reduce both
+        // Temporal smoothing to reduce flickering (exponential moving average)
+        const smoothingFactor = 0.7;
+        this.controls.forward = this.controls.forward
+          ? this.controls.forward * smoothingFactor +
+            rawForward * (1 - smoothingFactor)
+          : rawForward;
+        this.controls.left = this.controls.left
+          ? this.controls.left * smoothingFactor +
+            rawLeft * (1 - smoothingFactor)
+          : rawLeft;
+        this.controls.right = this.controls.right
+          ? this.controls.right * smoothingFactor +
+            rawRight * (1 - smoothingFactor)
+          : rawRight;
+        this.controls.reverse = this.controls.reverse
+          ? this.controls.reverse * smoothingFactor +
+            rawReverse * (1 - smoothingFactor)
+          : rawReverse;
+
+        // Enhanced conflict resolution with gentler transitions
+        if (this.controls.left > 0.2 && this.controls.right > 0.2) {
           const diff = this.controls.left - this.controls.right;
-          if (Math.abs(diff) < 0.2) {
-            this.controls.left = 0;
-            this.controls.right = 0;
+          if (Math.abs(diff) < 0.15) {
+            // Very close values - reduce both gradually
+            this.controls.left *= 0.5;
+            this.controls.right *= 0.5;
           } else {
-            // Keep the stronger direction, reduce the weaker
+            // Keep stronger direction, gradually reduce weaker
             if (this.controls.left > this.controls.right) {
-              this.controls.right = 0;
-              this.controls.left = Math.min(this.controls.left, 0.8);
+              this.controls.right *= 0.3;
+              this.controls.left = Math.min(this.controls.left, 0.9);
             } else {
-              this.controls.left = 0;
-              this.controls.right = Math.min(this.controls.right, 0.8);
+              this.controls.left *= 0.3;
+              this.controls.right = Math.min(this.controls.right, 0.9);
             }
           }
         }
 
-        // Prevent reverse when moving forward well
-        if (this.controls.forward > 0.5 && this.speed > 1) {
+        // Intelligent speed management
+        if (this.controls.forward > 0.6 && this.speed > 1.5) {
           this.controls.reverse = 0;
         }
-        
-        // Emergency forward boost if car is too slow or stopped
-        if (this.speed < 0.4) { // Reduced threshold by 0.1
-          this.controls.forward = Math.max(this.controls.forward, 0.7); // Reduced boost by 0.1
-          this.controls.reverse = 0;
+
+        // Adaptive forward boost based on sensor readings
+        if (this.speed < 0.3) {
+          // Check if path ahead is clear before boosting
+          const frontClear =
+            !this.sensor.readings[Math.floor(this.sensor.rayCount / 2)] ||
+            this.sensor.readings[Math.floor(this.sensor.rayCount / 2)].offset >
+              0.4;
+          if (frontClear) {
+            this.controls.forward = Math.max(this.controls.forward, 0.6);
+            this.controls.reverse = 0;
+          }
         }
       }
     }
@@ -227,13 +277,13 @@ class Car {
     if (this.speed < 0) {
       this.speed += this.friction;
     }
-    
+
     // CRITICAL: Prevent cars from stopping completely - maintain minimum forward speed
     if (Math.abs(this.speed) < this.friction) {
       // Instead of stopping, maintain minimum forward momentum
       this.speed = this.useAiBrain ? 0.4 : 0; // AI cars always have minimum speed (reduced by 0.1)
     }
-    
+
     // Additional safety: if AI car speed drops too low, boost it
     if (this.useAiBrain && this.speed < 0.2) {
       this.speed = Math.max(this.speed, 0.2); // Minimum speed for AI cars (reduced by 0.1)
