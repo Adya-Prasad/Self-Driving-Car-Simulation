@@ -9,6 +9,8 @@
 **🎯 A pure JavaScript neural network system that learns to drive cars autonomously and avoid obstacles**
 
 ![AI Self Learning, Self Driving Car Simulation Screenshot](https://i.ibb.co/prWd5xnK/Screenshot-2025-08-30-at-23-11-19-Self-driving-car-simulation-No-libraries.png)
+![A beautiful sunset over the mountains](https://i.postimg.cc/SxFH8jBJ/gfrgfrgrdgt.png "App Screenshot")
+![A beautiful sunset over the mountains](https://i.ibb.co/prWd5xnK/Screenshot-2025-08-30-at-23-11-19-Self-driving-car-simulation-No-libraries.png "App Screenshot")
 
 > 🙏 Inspired by [Dr. Radu Mariescu-Istodor ](https://radufromfinland.com/)
 > FreeCodeCamp Dr Radu YT video (simple and easy version) [Self-Driving Car with JavaScript Course – Neural Networks and Machine Learning](https://www.youtube.com/watch?v=Rs_rAxEsAvI)
