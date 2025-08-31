@@ -8,11 +8,7 @@
 
 **🎯 A pure JavaScript neural network system that learns to drive cars autonomously and avoid obstacles**
 
-[![Screenshot-Self-driving-car-simulation.png](https://i.postimg.cc/rp37SQFr/Screenshot-Self-driving-car-simulation.png)](https://postimg.cc/hJ8Cn8mD)
-
-![AI Self Learning, Self Driving Car Simulation Screenshot](https://i.ibb.co/prWd5xnK/Screenshot-2025-08-30-at-23-11-19-Self-driving-car-simulation-No-libraries.png)
-![A beautiful sunset over the mountains](https://i.postimg.cc/SxFH8jBJ/gfrgfrgrdgt.png "App Screenshot")
-![A beautiful sunset over the mountains](https://i.ibb.co/prWd5xnK/Screenshot-2025-08-30-at-23-11-19-Self-driving-car-simulation-No-libraries.png "App Screenshot")
+![Screenshot-Self-driving-car-simulation.png](https://i.postimg.cc/rp37SQFr/Screenshot-Self-driving-car-simulation.png)
 
 > 🙏 Inspired by [Dr. Radu Mariescu-Istodor ](https://radufromfinland.com/)
 > FreeCodeCamp Dr Radu YT video (simple and easy version) [Self-Driving Car with JavaScript Course – Neural Networks and Machine Learning](https://www.youtube.com/watch?v=Rs_rAxEsAvI)
@@ -28,10 +24,10 @@ visit (Live URL) → [Live URL coming very soon]()
 | **Genetic Algorithm** with mutation-based evolution | **No external libraries** - Pure vanilla JavaScript|
 | **Population-based** learning (80 AI cars per generation) | **Curved oval track** with dynamic traffic for mimicing real worl simulation
 | **Fitness-driven** selection for optimal performance | Multi-layer perceptron|
-| **Real-time** neural network visualization | **Collision avoidance** use sensor system to avoid damaged with traffic cars and road borders
+| **Real-time** neural network Visualisation | **Collision avoidance** use sensor system to avoid damage with traffic cars and road borders
 
 
-## Quick Start (Running in your Device)
+## Quick Start (Running on your Device)
 
 ```bash
 # Clone the repository
@@ -161,7 +157,7 @@ raySpread: Math.PI * 0.75 // 135° field of view
 ## 🎨 **Features Showcase**
 
 ### **🌈 Visual Neural Network**
-- **Real-time visualization** of the best car's brain
+- **Real-time Visualization** of the best car's brain
 - **Green connections**: Positive weights (excitatory)
 - **Red connections**: Negative weights (inhibitory)
 - **Animated data flow** showing decision-making process
@@ -241,7 +237,7 @@ I welcome contributions! Here's how you can help:
 ### **✨ Feature Requests**
 - **Simulation pause and resume** make button working
 - **Multiple AI strategies** (aggressive vs defensive)
-- **Additional road obstacles** like road pathhole, traffic light
+- **Additional road obstacles** like road pathole, traffic light
 
 ### **🔧 Development Setup**
 ```bash
@@ -274,4 +270,4 @@ MIT License - Feel free to use, modify, and distribute!
 
 **🚗💨 Happy AI Training! Watch your cars evolve from chaos to intelligence! 🧠✨**
 
-*Made with ❤️ and lots of hard coded iteration 
+*Made with ❤️ and lots of hard-coded iteration 
