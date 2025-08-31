@@ -8,6 +8,8 @@
 
 **🎯 A pure JavaScript neural network system that learns to drive cars autonomously and avoid obstacles**
 
+[![Screenshot-Self-driving-car-simulation.png](https://i.postimg.cc/rp37SQFr/Screenshot-Self-driving-car-simulation.png)](https://postimg.cc/hJ8Cn8mD)
+
 ![AI Self Learning, Self Driving Car Simulation Screenshot](https://i.ibb.co/prWd5xnK/Screenshot-2025-08-30-at-23-11-19-Self-driving-car-simulation-No-libraries.png)
 ![A beautiful sunset over the mountains](https://i.postimg.cc/SxFH8jBJ/gfrgfrgrdgt.png "App Screenshot")
 ![A beautiful sunset over the mountains](https://i.ibb.co/prWd5xnK/Screenshot-2025-08-30-at-23-11-19-Self-driving-car-simulation-No-libraries.png "App Screenshot")
